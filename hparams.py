@@ -1,5 +1,5 @@
-import tensorflow as tf
-import numpy as np
+import tensorflow as tf 
+import numpy as np 
 
 
 # Default hyperparameters
@@ -10,35 +10,32 @@ hparams = tf.contrib.training.HParams(
 
 
 	#Audio
-	num_mels = 80,
-	num_freq = 513, #only used when adding linear spectrograms post processing network
-	rescale = True,
+	num_mels = 80, 
+	num_freq = 1201, #only used when adding linear spectrograms post processing network
+	rescale = True, 
 	rescaling_max = 0.999,
 	trim_silence = True,
-	# Use LWS (https://github.com/Jonathan-LeRoux/lws) for STFT and phase reconstruction
-	# It's preferred to set True to use with https://github.com/r9y9/wavenet_vocoder
-	use_lws=True,
 
 	#Mel spectrogram
-	fft_size = 1024,
-	hop_size = 256,
-	sample_rate = 22050, #22050 Hz (corresponding to ljspeech dataset)
+	fft_size = 2400,
+	hop_size = 600,
+	sample_rate = 48000, #22050 Hz (corresponding to ljspeech dataset)
 	frame_shift_ms = None,
 
 	#Mel and Linear spectrograms normalization/scaling and clipping
 	signal_normalization = True,
 	allow_clipping_in_normalization = True, #Only relevant if mel_normalization = True
-	symmetric_mels = False, #Whether to scale the data to be symmetric around 0
-	max_abs_value = 4., #max absolute value of data. If symmetric, data will be [-max, max] else [0, max]
+	symmetric_mels = True, #Whether to scale the data to be symmetric around 0
+	max_abs_value = 4., #max absolute value of data. If symmetric, data will be [-max, max] else [0, max] 
 
 	#Limits
-	min_level_db =- 100,
+	min_level_db = -100,
 	ref_level_db = 20,
 	fmin = 125,
-	fmax = 7600,
+	fmax = 8192,
 
 	#Griffin Lim
-	power = 1.1,
+	power = 1.55,
 	griffin_lim_iters = 60,
 
 
@@ -53,7 +50,7 @@ hparams = tf.contrib.training.HParams(
 	enc_conv_channels = 512, #number of encoder convolutions filters for each layer
 	encoder_lstm_units = 256, #number of lstm units for each direction (forward and backward)
 
-	smoothing = False, #Whether to smooth the attention normalization function
+	smoothing = False, #Whether to smooth the attention normalization function 
 	attention_dim = 128, #dimension of attention space
 	attention_filters = 32, #number of attention convolution filters
 	attention_kernel = (31, ), #kernel size of attention convolution
@@ -86,8 +83,8 @@ hparams = tf.contrib.training.HParams(
 	# **NOTE**: if you change the one of the two parameters below, you need to
 	# re-run preprocessing before training.
 	# **NOTE**: scaler input (raw or mulaw) is experimental. Use it your own risk.
-	input_type="raw",
-	quantize_channels=65536,  # 65536 or 256
+	input_type="mulaw-quantize",
+	quantize_channels=256,  # 65536 or 256
 
 	silence_threshold=2,
 
@@ -98,7 +95,7 @@ hparams = tf.contrib.training.HParams(
 
 
 	#Tacotron Training
-	tacotron_batch_size = 16, #number of training samples on each training steps
+	tacotron_batch_size = 32, #number of training samples on each training steps
 	tacotron_reg_weight = 1e-6, #regularization weight (for l2 regularization)
 	tacotron_scale_regularization = True, #Whether to rescale regularization weight to adapt for outputs range (used when reg_weight is high and biasing the model)
 
@@ -117,7 +114,7 @@ hparams = tf.contrib.training.HParams(
 	tacotron_dropout_rate = 0.5, #dropout rate for all convolutional layers + prenet
 
 	tacotron_teacher_forcing_ratio = 1., #Value from [0., 1.], 0.=0%, 1.=100%, determines the % of times we force next decoder inputs
-
+	
 
 	#Wavenet Training TODO
 
@@ -156,10 +153,10 @@ hparams = tf.contrib.training.HParams(
 	'it appears that oswald had only one caller in response to all of his fpcc activities,',
 	'he relied on the absence of the strychnia.',
 	'scoggins thought it was lighter.',
-	'''would, it is probable, have eventually overcome the reluctance of some of the prisoners at least,
+	'''would, it is probable, have eventually overcome the reluctance of some of the prisoners at least, 
 	and would have possessed so much moral dignity''',
-	'''the only purpose of this whole sentence is to evaluate the scalability of the model for very long sentences.
-	This is not even a long sentence anymore, it has become an entire paragraph.
+	'''the only purpose of this whole sentence is to evaluate the scalability of the model for very long sentences. 
+	This is not even a long sentence anymore, it has become an entire paragraph. 
 	Should I stop now? Let\'s add this last sentence in which we talk about nothing special.''',
 	'Thank you so much for your support!!'
 	]
