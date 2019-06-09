@@ -11,15 +11,15 @@ hparams = tf.contrib.training.HParams(
 
 	#Audio
 	num_mels = 80, 
-	num_freq = 513, #only used when adding linear spectrograms post processing network
+	num_freq = 1201, #only used when adding linear spectrograms post processing network
 	rescale = True, 
 	rescaling_max = 0.999,
 	trim_silence = True,
 
 	#Mel spectrogram
-	fft_size = 1024,
-	hop_size = 256,
-	sample_rate = 22050, #22050 Hz (corresponding to ljspeech dataset)
+	fft_size = 2400,
+	hop_size = 600,
+	sample_rate = 48000, #22050 Hz (corresponding to ljspeech dataset)
 	frame_shift_ms = None,
 
 	#Mel and Linear spectrograms normalization/scaling and clipping
@@ -29,10 +29,10 @@ hparams = tf.contrib.training.HParams(
 	max_abs_value = 4., #max absolute value of data. If symmetric, data will be [-max, max] else [0, max] 
 
 	#Limits
-	min_level_db =- 100,
+	min_level_db = -100,
 	ref_level_db = 20,
 	fmin = 125,
-	fmax = 7600,
+	fmax = 8192,
 
 	#Griffin Lim
 	power = 1.55,
