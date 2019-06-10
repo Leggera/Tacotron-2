@@ -4,7 +4,7 @@ All notations and variable names were used in concordance with originial tensorf
 import collections
 import numpy as np
 import tensorflow as tf
-from tensorflow_addons.rnn import NASCell
+from tensorflow_addons.rnn import NASCell as RNNCell
 from tensorflow.python.framework import ops
 from tensorflow.python.ops import rnn_cell_impl
 from tensorflow.python.ops import check_ops
