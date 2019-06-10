@@ -15,7 +15,7 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 			kernel_size=kernel_size,
 			activation=None,
 			padding='same')
-		batched = keras.layers.BatchNormalization(conv1d_output, axis=1)
+		batched = keras.layers.BatchNormalization(conv1d_output)
 		activated = activation(batched)
 		return keras.layers.Dropout(activated, rate=drop_rate,
 								name='dropout_{}'.format(scope))
