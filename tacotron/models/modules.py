@@ -44,6 +44,7 @@ class EncoderConvolutions:
 	def __call__(self, inputs):
 		with tf.variable_scope(self.scope):
 			x = inputs
+			print (self.channels)
 			for i in range(hparams.enc_conv_num_layers):
 				x = conv1d(x, self.kernel_size, self.channels, self.activation,
 					self.is_training, 'conv_layer_{}_'.format(i + 1)+self.scope)
