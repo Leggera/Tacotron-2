@@ -1,4 +1,5 @@
 import tensorflow as tf 
+import keras
 from tacotron.models.zoneout_LSTM import ZoneoutLSTMCell
 from tensorflow.contrib.rnn import LSTMBlockCell
 from hparams import hparams
@@ -8,15 +9,15 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 	drop_rate = hparams.tacotron_dropout_rate
 
 	with tf.variable_scope(scope):
-		conv1d_output = tf.layers.conv1d(
+		conv1d_output = keras.layers.conv1d(
 			inputs,
 			filters=channels,
 			kernel_size=kernel_size,
 			activation=None,
 			padding='same')
-		batched = tf.layers.batch_normalization(conv1d_output, training=is_training)
+		batched = keras.layers.batch_normalization(conv1d_output, training=is_training)
 		activated = activation(batched)
-		return tf.layers.dropout(activated, rate=drop_rate, training=is_training,
+		return keras.layers.dropout(activated, rate=drop_rate, training=is_training,
 								name='dropout_{}'.format(scope))
 
 
@@ -74,7 +75,7 @@ class EncoderRNN:
 
 	def __call__(self, inputs, input_lengths):
 		with tf.variable_scope(self.scope):
-			outputs, (fw_state, bw_state) = tf.nn.bidirectional_dynamic_rnn(
+			outputs, (fw_state, bw_state) = keras.layers.Bidirectional(keras.layers.RNN(cell))(
 				self._cell,
 				self._cell,
 				inputs,
@@ -143,7 +144,7 @@ class DecoderRNN:
 			zoneout_factor_cell=zoneout,
 			zoneout_factor_output=zoneout) for i in range(layers)]
 
-		self._cell = tf.contrib.rnn.MultiRNNCell(self.rnn_layers, state_is_tuple=True)
+		self._cell = tf.keras.layers.StackedRNNCells(self.rnn_layers, state_is_tuple=True)
 
 	def __call__(self, inputs, states):
 		with tf.variable_scope(self.scope):
