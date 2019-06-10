@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow_addons.seq2seq import sampler as Helper
+from tensorflow_addons.seq2seq import Sampler as Helper
 from hparams import hparams
 
 
