@@ -1,5 +1,5 @@
 import tensorflow as tf 
-import keras
+from tensorflow import keras
 from tacotron.models.zoneout_LSTM import ZoneoutLSTMCell
 from tensorflow.contrib.rnn import LSTMBlockCell
 from hparams import hparams
