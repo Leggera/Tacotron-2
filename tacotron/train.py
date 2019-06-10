@@ -17,21 +17,21 @@ log = infolog.log
 
 
 def add_stats(model):
-	with tf.variable_scope('stats') as scope:
-		tf.summary.histogram('mel_outputs', model.mel_outputs)
-		tf.summary.histogram('mel_targets', model.mel_targets)
-		tf.summary.scalar('before_loss', model.before_loss)
-		tf.summary.scalar('after_loss', model.after_loss)
-		if hparams.predict_linear:
-			tf.summary.scalar('linear loss', model.linear_loss)
-		tf.summary.scalar('regularization_loss', model.regularization_loss)
-		tf.summary.scalar('stop_token_loss', model.stop_token_loss)
-		tf.summary.scalar('loss', model.loss)
-		tf.summary.scalar('learning_rate', model.learning_rate) #control learning rate decay speed
-		gradient_norms = [tf.norm(grad) for grad in model.gradients]
-		tf.summary.histogram('gradient_norm', gradient_norms)
-		tf.summary.scalar('max_gradient_norm', tf.reduce_max(gradient_norms)) #visualize gradients (in case of explosion)
-		return tf.summary.merge_all()
+	#with tf.variable_scope('stats') as scope:
+	tf.summary.histogram('mel_outputs', model.mel_outputs)
+	tf.summary.histogram('mel_targets', model.mel_targets)
+	tf.summary.scalar('before_loss', model.before_loss)
+	tf.summary.scalar('after_loss', model.after_loss)
+	if hparams.predict_linear:
+		tf.summary.scalar('linear loss', model.linear_loss)
+	tf.summary.scalar('regularization_loss', model.regularization_loss)
+	tf.summary.scalar('stop_token_loss', model.stop_token_loss)
+	tf.summary.scalar('loss', model.loss)
+	tf.summary.scalar('learning_rate', model.learning_rate) #control learning rate decay speed
+	gradient_norms = [tf.norm(grad) for grad in model.gradients]
+	tf.summary.histogram('gradient_norm', gradient_norms)
+	tf.summary.scalar('max_gradient_norm', tf.reduce_max(gradient_norms)) #visualize gradients (in case of explosion)
+	return tf.summary.merge_all()
 
 def time_string():
 	return datetime.now().strftime('%Y-%m-%d %H:%M')
@@ -58,8 +58,8 @@ def train(log_dir, args):
 
 	#Set up data feeder
 	coord = tf.train.Coordinator()
-	with tf.variable_scope('datafeeder') as scope:
-		feeder = Feeder(coord, input_path, hparams)
+	#with tf.variable_scope('datafeeder') as scope:
+	feeder = Feeder(coord, input_path, hparams)
 
 	#Set up model:
 	step_count = 0
@@ -71,15 +71,15 @@ def train(log_dir, args):
 		print('no step_counter file found, assuming there is no saved checkpoint')
 
 	global_step = tf.Variable(step_count, name='global_step', trainable=False)
-	with tf.variable_scope('model') as scope:
-		model = create_model(args.model, hparams)
-		if hparams.predict_linear:
-			model.initialize(feeder.inputs, feeder.input_lengths, feeder.mel_targets, feeder.token_targets, feeder.linear_targets)
-		else:
-			model.initialize(feeder.inputs, feeder.input_lengths, feeder.mel_targets, feeder.token_targets)
-		model.add_loss()
-		model.add_optimizer(global_step)
-		stats = add_stats(model)
+	#with tf.variable_scope('model') as scope:
+	model = create_model(args.model, hparams)
+	if hparams.predict_linear:
+		model.initialize(feeder.inputs, feeder.input_lengths, feeder.mel_targets, feeder.token_targets, feeder.linear_targets)
+	else:
+		model.initialize(feeder.inputs, feeder.input_lengths, feeder.mel_targets, feeder.token_targets)
+	model.add_loss()
+	model.add_optimizer(global_step)
+	stats = add_stats(model)
 
 	#Book keeping
 	step = 0
@@ -104,11 +104,9 @@ def train(log_dir, args):
 					checkpoint_state = tf.train.get_checkpoint_state(save_dir)
 				except tf.errors.OutOfRangeError as e:
 					log('Cannot restore checkpoint: {}'.format(e))
-
 			if (checkpoint_state and checkpoint_state.model_checkpoint_path):
 				log('Loading checkpoint {}'.format(checkpoint_state.model_checkpoint_path))
 				saver.restore(sess, checkpoint_state.model_checkpoint_path)
-
 			else:
 				if not args.restore:
 					log('Starting new training!')
@@ -194,7 +192,7 @@ def train(log_dir, args):
 			coord.request_stop(e)
 
 def tacotron_train(args):
-	#hparams.parse(args.hparams)
+	hparams.parse(args.hparams)
 	os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(args.tf_log_level)
 	run_name = args.name or args.model
 	log_dir = os.path.join(args.base_dir, 'logs-{}'.format(run_name))
