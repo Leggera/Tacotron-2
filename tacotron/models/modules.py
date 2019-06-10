@@ -15,9 +15,9 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 			kernel_size=kernel_size,
 			activation=None,
 			padding='same')
-		batched = keras.layers.BatchNormalization(conv1d_output, training=is_training)
+		batched = keras.layers.BatchNormalization(conv1d_output, *training=is_training)
 		activated = activation(batched)
-		return keras.layers.Dropout(activated, rate=drop_rate, training=is_training,
+		return keras.layers.Dropout(activated, rate=drop_rate, *training=is_training,
 								name='dropout_{}'.format(scope))
 
 
@@ -116,7 +116,7 @@ class Prenet:
 					name='dense_{}'.format(i + 1))
 				#The paper discussed introducing diversity in generation at inference time
 				#by using a dropout of 0.5 only in prenet layers (in both training and inference).
-				x = keras.layers.Dropout(dense, rate=self.drop_rate, training=True,
+				x = keras.layers.Dropout(dense, rate=self.drop_rate, *training=True,
 					name='dropout_{}'.format(i + 1) + self.scope)
 		return x
 
