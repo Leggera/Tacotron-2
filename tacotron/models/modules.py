@@ -15,9 +15,9 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 			kernel_size=kernel_size,
 			activation=None,
 			padding='same')
-		batched = keras.layers.batch_normalization(conv1d_output, training=is_training)
+		batched = keras.layers.BatchNormalization(conv1d_output, training=is_training)
 		activated = activation(batched)
-		return keras.layers.dropout(activated, rate=drop_rate, training=is_training,
+		return keras.layers.Dropout(activated, rate=drop_rate, training=is_training,
 								name='dropout_{}'.format(scope))
 
 
@@ -112,11 +112,11 @@ class Prenet:
 
 		with tf.variable_scope(self.scope):
 			for i, size in enumerate(self.layer_sizes):
-				dense = tf.layers.dense(x, units=size, activation=self.activation,
+				dense = keras.layers.Dense(x, units=size, activation=self.activation,
 					name='dense_{}'.format(i + 1))
 				#The paper discussed introducing diversity in generation at inference time
 				#by using a dropout of 0.5 only in prenet layers (in both training and inference).
-				x = tf.layers.dropout(dense, rate=self.drop_rate, training=True,
+				x = keras.layers.Dropout(dense, rate=self.drop_rate, training=True,
 					name='dropout_{}'.format(i + 1) + self.scope)
 		return x
 
@@ -145,7 +145,7 @@ class DecoderRNN:
 			zoneout_factor_cell=zoneout,
 			zoneout_factor_output=zoneout) for i in range(layers)]
 
-		self._cell = tf.keras.layers.StackedRNNCells(self.rnn_layers, state_is_tuple=True)
+		self._cell = keras.layers.StackedRNNCells(self.rnn_layers, state_is_tuple=True)
 
 	def __call__(self, inputs, states):
 		with tf.variable_scope(self.scope):
@@ -173,7 +173,7 @@ class FrameProjection:
 		with tf.variable_scope(self.scope):
 			#If activation==None, this returns a simple Linear projection
 			#else the projection will be passed through an activation function
-			output = tf.layers.dense(inputs, units=self.shape, activation=self.activation,
+			output = keras.layers.Dense(inputs, units=self.shape, activation=self.activation,
 				name='projection_{}'.format(self.scope))
 
 			return output
@@ -200,7 +200,7 @@ class StopProjection:
 
 	def __call__(self, inputs):
 		with tf.variable_scope(self.scope):
-			output = tf.layers.dense(inputs, units=self.shape,
+			output = keras.layers.Dense(inputs, units=self.shape,
 				activation=None, name='projection_{}'.format(self.scope))
 
 			#During training, don't use activation as it is integrated inside the sigmoid_cross_entropy loss function
