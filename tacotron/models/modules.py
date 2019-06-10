@@ -9,7 +9,7 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 	drop_rate = hparams.tacotron_dropout_rate
 
 	with tf.variable_scope(scope):
-		conv1d_output = keras.layers.conv1d(
+		conv1d_output = keras.layers.Conv1D(
 			inputs,
 			filters=channels,
 			kernel_size=kernel_size,
