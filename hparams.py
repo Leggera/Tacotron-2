@@ -83,13 +83,13 @@ hparams = {
 	# **NOTE**: if you change the one of the two parameters below, you need to
 	# re-run preprocessing before training.
 	# **NOTE**: scaler input (raw or mulaw) is experimental. Use it your own risk.
-	'input_type="mulaw-quantize",
-	'quantize_channels=256,  # 65536 or 256
+	'input_type' : "mulaw-quantize",
+	'quantize_channels' : 256,  # 65536 or 256
 
-	'silence_threshold=2,
+	'silence_threshold' : 2,
 
 	# Mixture of logistic distributions:
-	'log_scale_min=float(np.log(1e-14)),
+	'log_scale_min' : float(np.log(1e-14)),
 
 	#TODO model params
 
