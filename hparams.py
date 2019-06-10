@@ -196,6 +196,6 @@ hparams = Map({
 })
 
 def hparams_debug_string():
-	values = hparams.values()
+	values = hparams.keys()
 	hp = ['  %s: %s' % (name, values[name]) for name in sorted(values) if name != 'sentences']
 	return 'Hyperparameters:\n' + '\n'.join(hp)
