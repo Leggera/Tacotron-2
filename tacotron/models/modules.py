@@ -11,7 +11,7 @@ def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 	with tf.variable_scope(scope):
 		conv1d_output = keras.layers.Conv1D(
 			inputs,
-			filters=channels,
+			#filters=channels,
 			kernel_size=kernel_size,
 			activation=None,
 			padding='same')
@@ -44,7 +44,7 @@ class EncoderConvolutions:
 	def __call__(self, inputs):
 		with tf.variable_scope(self.scope):
 			x = inputs
-			print ('channels', self.channels)
+			print ('inputs', inputs)
 			for i in range(hparams.enc_conv_num_layers):
 				x = conv1d(x, self.kernel_size, self.channels, self.activation,
 					self.is_training, 'conv_layer_{}_'.format(i + 1)+self.scope)
