@@ -56,7 +56,7 @@ hparams = tf.contrib.training.HParams(
 	attention_kernel = (7, ),#31 #kernel size of attention convolution
 	cumulative_weights = True, #Whether to cumulate (sum) all previous attention weights or simply feed previous weights (Recommended: True)
 
-	prenet_layers = [64, 64]#[256, 256], #number of layers and number of units of prenet
+	prenet_layers = [64, 64],#[256, 256], #number of layers and number of units of prenet
 	decoder_layers = 2, #number of decoder lstm layers
 	decoder_lstm_units = 256,#1024, #number of decoder lstm units on each layer
 	max_iters = 2500, #Max decoder steps during inference (Just for safety from infinite loop cases)
