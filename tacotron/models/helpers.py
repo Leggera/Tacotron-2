@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-from tensorflow.contrib.seq2seq import Helper
+from tensorflow.seq2seq import Helper
 from hparams import hparams
 
 
