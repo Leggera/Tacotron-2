@@ -1,6 +1,6 @@
 import numpy as np
 import tensorflow as tf
-import tensorflow_addons as tfa
+#import tensorflow_addons as tfa
 #from tensorflow.python.ops.rnn_cell import RNNCell
 #from tensorflow_addons.rnn import cell as RNNCell
 from tensorflow.keras.layers import AbstractRNNCell as RNNCell
@@ -81,12 +81,12 @@ class ZoneoutLSTMCell(RNNCell):
 
         if num_proj:
             self._state_size = (
-                tfa.rnn.cell.LSTMStateTuple(num_units, num_proj)
+                tf.nn.rnn_cell.LSTMStateTuple(num_units, num_proj)
                 if state_is_tuple else num_units + num_proj)
             self._output_size = num_proj
         else:
             self._state_size = (
-                tfa.rnn.cell.LSTMStateTuple(num_units, num_units)
+                tf.nn.rnn_cell.LSTMStateTuple(num_units, num_units)
                 if state_is_tuple else 2 * num_units)
             self._output_size = num_units
 
@@ -214,7 +214,7 @@ class ZoneoutLSTMCell(RNNCell):
                 if self.proj_clip is not None:
                     h = tf.clip_by_value(h, -self.proj_clip, self.proj_clip)
 
-            new_state = (tfa.rnn.cell.LSTMStateTuple(c, h)
+            new_state = (tf.nn.rnn_cell.LSTMStateTuple(c, h)
                          if self.state_is_tuple else tf.concat(1, [c, h]))
 
             return h, new_state
