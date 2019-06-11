@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 #import tensorflow_addons as tfa
 #from tensorflow.python.ops.rnn_cell import RNNCell
-#from tensorflow_addons.rnn import cell as RNNCell
+from tensorflow_addons.rnn import cell as rnn_cell
 from tensorflow.keras.layers import AbstractRNNCell as RNNCell
 
 # Thanks to 'initializers_enhanced.py' of Project RNN Enhancement:
@@ -86,7 +86,7 @@ class ZoneoutLSTMCell(RNNCell):
             self._output_size = num_proj
         else:
             self._state_size = (
-                tf.nn.rnn_cell.LSTMStateTuple(num_units, num_units)
+                rnn_cell.LSTMStateTuple(num_units, num_units)
                 if state_is_tuple else 2 * num_units)
             self._output_size = num_units
 
