@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 #from tensorflow.python.ops.rnn_cell import RNNCell
-from tensorflow_addons.rnn import NASCell as RNNCell
+from tensorflow_addons.rnn import cell as RNNCell
 
 # Thanks to 'initializers_enhanced.py' of Project RNN Enhancement:
 # https://github.com/nicolas-ivanov/Seq2Seq_Upgrade_TensorFlow/blob/master/rnn_enhancement/initializers_enhanced.py
