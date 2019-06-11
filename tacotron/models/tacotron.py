@@ -41,7 +41,7 @@ class Tacotron():
 		if gta and linear_targets is not None:
 			raise ValueError('Linear spectrogram prediction is not supported in GTA mode!')
 
-		with tf.variable_scope('inference') as scope:
+		with tf.compat.v1.variable_scope('inference') as scope:
 			is_training = mel_targets is not None and not gta
 			batch_size = tf.shape(inputs)[0]
 			hp = self._hparams
@@ -178,7 +178,7 @@ class Tacotron():
 
 	def add_loss(self):
 		'''Adds loss to the model. Sets "loss" field. initialize must have been called.'''
-		with tf.variable_scope('loss') as scope:
+		with tf.compat.v1.variable_scope('loss') as scope:
 			hp = self._hparams
 
 			# Compute loss of predictions before postnet
