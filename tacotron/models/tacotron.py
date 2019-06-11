@@ -49,7 +49,7 @@ class Tacotron():
 			post_condition = hp.predict_linear and not gta
 
 			# Embeddings ==> [batch_size, sequence_length, embedding_dim]
-			embedding_table = tf.Variable(
+			embedding_table = tf.compat.v1.get_variable(
 				'inputs_embedding', [len(symbols), hp.embedding_dim], dtype=tf.float32)
 			embedded_inputs = tf.nn.embedding_lookup(embedding_table, inputs)
 
