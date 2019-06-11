@@ -53,7 +53,7 @@ class Feeder(threading.Thread):
 		]
 
 		# Create queue for buffering data
-		queue = tf.FIFOQueue(8, [tf.int32, tf.int32, tf.float32, tf.float32, tf.float32], name='input_queue')
+		queue = tf.compat.v1.FIFOQueue(8, [tf.int32, tf.int32, tf.float32, tf.float32, tf.float32], name='input_queue')
 		self._enqueue_op = queue.enqueue(self._placeholders)
 		self.inputs, self.input_lengths, self.mel_targets, self.token_targets, self.linear_targets = queue.dequeue()
 		self.inputs.set_shape(self._placeholders[0].shape)
