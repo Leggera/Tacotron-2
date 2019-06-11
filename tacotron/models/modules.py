@@ -1,7 +1,7 @@
 import tensorflow as tf 
 from tensorflow import keras
 from tacotron.models.zoneout_LSTM import ZoneoutLSTMCell
-from tensorflow_addons.rnn import LayerNormLSTMCell
+from tensorflow_addons.rnn.cell import LayerNormLSTMCell
 from hparams import hparams
 
 
