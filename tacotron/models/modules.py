@@ -8,7 +8,7 @@ from hparams import hparams
 def conv1d(inputs, kernel_size, channels, activation, is_training, scope):
 	drop_rate = hparams.tacotron_dropout_rate
 
-	with tf.variable_scope(scope):
+	with tf.compat.v1.variable_scope(scope):
 		conv1d_output = keras.layers.Conv1D(
 			inputs,
 			#filters=channels,
@@ -42,7 +42,7 @@ class EncoderConvolutions:
 		self.scope = 'enc_conv_layers' if scope is None else scope
 
 	def __call__(self, inputs):
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			x = inputs
 			print ('inputs', inputs)
 			for i in range(hparams.enc_conv_num_layers):
@@ -75,7 +75,7 @@ class EncoderRNN:
 			zoneout_factor_output=zoneout)
 
 	def __call__(self, inputs, input_lengths):
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			outputs, (fw_state, bw_state) = keras.layers.Bidirectional(keras.layers.RNN(cell))(
 				self._cell,
 				self._cell,
@@ -110,7 +110,7 @@ class Prenet:
 	def __call__(self, inputs):
 		x = inputs
 
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			for i, size in enumerate(self.layer_sizes):
 				dense = keras.layers.Dense(x, units=size, activation=self.activation,
 					name='dense_{}'.format(i + 1))
@@ -170,7 +170,7 @@ class FrameProjection:
 		self.scope = 'Linear_projection' if scope is None else scope
 
 	def __call__(self, inputs):
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			#If activation==None, this returns a simple Linear projection
 			#else the projection will be passed through an activation function
 			output = keras.layers.Dense(inputs, units=self.shape, activation=self.activation,
@@ -199,7 +199,7 @@ class StopProjection:
 		self.scope = 'stop_token_projection' if scope is None else scope
 
 	def __call__(self, inputs):
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			output = keras.layers.Dense(inputs, units=self.shape,
 				activation=None, name='projection_{}'.format(self.scope))
 
@@ -230,7 +230,7 @@ class Postnet:
 		self.scope = 'postnet_convolutions' if scope is None else scope
 
 	def __call__(self, inputs):
-		with tf.variable_scope(self.scope):
+		with tf.compat.v1.variable_scope(self.scope):
 			x = inputs
 			for i in range(hparams.postnet_num_layers - 1):
 				x = conv1d(x, self.kernel_size, self.channels, self.activation,
